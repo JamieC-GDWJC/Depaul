@@ -1,0 +1,8 @@
+import asset as normal
+
+ensure on the materials imported that the shader is set to Custom/Outline fill or else they will be pink
+
+make a tag called Selectable, apply it to whatever the shader is on
+
+make sure an EventSystem is in the scene, under UI tab when you go to add an object
+
