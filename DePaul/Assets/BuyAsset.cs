@@ -5,11 +5,12 @@ using UnityEngine;
 public class BuyAsset : MonoBehaviour
 {
     public bool Unlocked = false;
-    [SerializeField] private int cost;
+    public int cost;
     private GameManager GM;
     private AudioManager AM;
-    
-    
+
+    [SerializeField] private AudioClip boughtAudioClip;
+    [SerializeField] private AudioClip errorAudioClip;
     
     // Start is called before the first frame update
     void Start()
@@ -26,15 +27,15 @@ public class BuyAsset : MonoBehaviour
 
     public void Buy()
     {
-        if (GM.donationValue >= cost)
+        if (!Unlocked && GM.donationValue >= cost)
         {
             Unlocked = true;
             GM.SpendDono(cost);
-            AM.PlaySource();
+            AM.PlaySource(clip: boughtAudioClip);
         }
         else
         {
-            
+            AM.PlaySource(clip: errorAudioClip);
         }
     }
 }

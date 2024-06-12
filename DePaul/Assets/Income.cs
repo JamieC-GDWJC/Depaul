@@ -22,6 +22,7 @@ public class IncomeGenerator : MonoBehaviour
     private UIController UI;
     private BuyAsset _buyAsset;
 
+    private BoxCollider _collider;
     void Start()
     {
         GameObject manager = GameObject.FindWithTag("Manager"); 
@@ -29,15 +30,16 @@ public class IncomeGenerator : MonoBehaviour
         AM = GM.GetComponent<AudioManager>();
         UI = GetComponent<UIController>();
         _buyAsset = GetComponent<BuyAsset>();
+        _collider = GetComponent<BoxCollider>();
         SetUpBuyUI();
     }
 
     void SetUpBuyUI()
     {
-        UI.AddInfoField("Cooldown", waitTime.ToString() + "s");
-        UI.AddInfoField("Income",  "€"+ collectionAmount.ToString());
+        UI.AddInfoField("Cooldown", waitTime + "s");
+        UI.AddInfoField("Income",  "€" + collectionAmount);
         
-        UI.AddInfoField("Buy", "€"+"Cost to unlock", false);
+        UI.AddInfoField("Buy", "€" + _buyAsset.cost, false);
     }
 
     public void SetMode(bool isAutomatic)
@@ -120,5 +122,14 @@ public class IncomeGenerator : MonoBehaviour
                 AM.PlaySource(clip: audioClipWithKey.clip);
             }
         }
+    }
+
+    private void OnMouseEnter()
+    {
+        UI.ShowUI(_collider);
+    }
+
+    private void OnMouseExit()
+    {
     }
 }

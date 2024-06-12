@@ -1,7 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
@@ -23,6 +27,8 @@ public class UIController : MonoBehaviour
     private BuyAsset _buyAsset;
 
     private Camera mainCamera;
+
+    private bool isShowing;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,15 +39,16 @@ public class UIController : MonoBehaviour
         mainCamera = Camera.main;
         
         InstantiateUI();
+        ShowUI(false);
     }
 
     void InstantiateUI()
     {
         Bubble = Instantiate(UIBubble,canvasGameObject.transform);
-        infoLocation = Bubble.transform.Find("Content/Info");
-        buyLocation = Bubble.transform.Find("Content/Buy");
+        infoLocation = Bubble.transform.Find("BubbleUI/Content/Info");
+        buyLocation = Bubble.transform.Find("BubbleUI/Content/Buy");
         buyLocation.GetComponent<Button>().onClick.AddListener(delegate { _buyAsset.Buy(); });
-        contentLayoutGroup = Bubble.transform.Find("Content").GetComponent<VerticalLayoutGroup>();
+        contentLayoutGroup = Bubble.transform.Find("BubbleUI/Content").GetComponent<VerticalLayoutGroup>();
     }
 
     public void AddInfoField(string field, string content, bool isInfo = true)
@@ -62,7 +69,6 @@ public class UIController : MonoBehaviour
         StartCoroutine(UpdateLayoutGroup());
     }
     
-    
     IEnumerator UpdateLayoutGroup()
     {
         contentLayoutGroup.enabled = false;
@@ -82,14 +88,66 @@ public class UIController : MonoBehaviour
     }
 
     private Vector3 pos;
+
+    private float cooldownTime = 2;
+
+    private float timer = 0;
     // Update is called once per frame
     void Update()
     {
+        if(!isShowing)
+            return;
+        
         pos = mainCamera.WorldToScreenPoint(transform.position + new Vector3(0, UIOffset, 0));
         if (Bubble.transform.position != pos)
         {
             Bubble.transform.position = pos;
         }
+
+        if (!IsMouseOverUi)
+        {
+            timer += Time.deltaTime;
+            if(timer >= cooldownTime)
+                ShowUI(false);
+        }
+        else
+        {
+            timer = 0;
+        }
     }
+
+    public void ShowUI(bool show)
+    {
+        timer = 0;
+        isShowing = show;
+        print("show UI: " + show);
+        Bubble.SetActive(show);
+    }
+    
+
+    public static bool IsMouseOverUi
+    {
+        get
+        {
+            // [Only works well while there is not PhysicsRaycaster on the Camera)
+            //EventSystem eventSystem = EventSystem.current;
+            //return (eventSystem != null && eventSystem.IsPointerOverGameObject());
+ 
+            // [Works with PhysicsRaycaster on the Camera. Requires New Input System. Assumes mouse.)
+            if (EventSystem.current == null)
+            {
+                return false;
+            }
+            RaycastResult lastRaycastResult = ((InputSystemUIInputModule)EventSystem.current.currentInputModule).GetLastRaycastResult(Mouse.current.deviceId);
+            const int uiLayer = 5;
+            return lastRaycastResult.gameObject != null && lastRaycastResult.gameObject.layer == uiLayer;
+        }
+    }
+    
 }
+
+
+
+
+
 
