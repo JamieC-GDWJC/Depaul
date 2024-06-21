@@ -11,7 +11,7 @@ public class BuyAsset : MonoBehaviour
 
     [SerializeField] private AudioClip boughtAudioClip;
     [SerializeField] private AudioClip errorAudioClip;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +22,7 @@ public class BuyAsset : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Buy()
@@ -38,4 +38,5 @@ public class BuyAsset : MonoBehaviour
             AM.PlaySource(clip: errorAudioClip);
         }
     }
+
 }

@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         impactValue += value;
         for (int i = 0; i <= value; i++)
         {
-            Instantiate(Meeple);
+            //Instantiate(Meeple);
         }
     }
 }

@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IncomeGenerator : MonoBehaviour
+public class ServiceGenerator : MonoBehaviour
 {
     public float waitTime = 5f; // Time to wait in seconds
     public bool isAutomatic = false; // Toggle for automatic collection
-    public int collectionAmount;
+    public int PeopleHelped;
+    public int CostToRun;
 
     [Header("Audio")] 
     public List<AudioClipWithKey> clipList = new List<AudioClipWithKey>();
-
+    
     [Header("Upgrades")] 
-    public IncomeUpgrades upgrades = new IncomeUpgrades();
+    public ServiceUpgrades upgrades;
     
     private Coroutine automaticCoroutine;
     private bool canCollect = false;
@@ -24,6 +25,7 @@ public class IncomeGenerator : MonoBehaviour
     private UIController UI;
     private BuyAsset _buyAsset;
     private OutlineCommunication _outline;
+    
     void Start()
     {
         GameObject manager = GameObject.FindWithTag("Manager"); 
@@ -38,7 +40,9 @@ public class IncomeGenerator : MonoBehaviour
     void SetUpBuyUI()
     {
         UI.AddInfoField("Cooldown", waitTime + "s");
-        UI.AddInfoField("Income",  "€" + collectionAmount);
+        UI.AddInfoField("People Helped",PeopleHelped.ToString());
+        UI.AddInfoField("Cost","€" + CostToRun);
+        
         
         UI.AddInfoField("Buy", "€" + _buyAsset.cost, false);
     }
@@ -51,7 +55,7 @@ public class IncomeGenerator : MonoBehaviour
         {
             if (automaticCoroutine == null)
             {
-                automaticCoroutine = StartCoroutine(GenerateIncomeAutomatically());
+                automaticCoroutine = StartCoroutine(GenerateServiceAutomatically());
             }
         }
         else
@@ -61,7 +65,7 @@ public class IncomeGenerator : MonoBehaviour
                 StopCoroutine(automaticCoroutine);
                 automaticCoroutine = null;
             }
-            StartCoroutine(ManualIncomeCooldown());
+            StartCoroutine(ManualServiceCooldown());
         }
     }
 
@@ -93,13 +97,18 @@ public class IncomeGenerator : MonoBehaviour
         }
     }
 
-    IEnumerator GenerateIncomeAutomatically()
+    IEnumerator GenerateServiceAutomatically()
     {
         while (true)
         {
             StartCoroutine(UI.FillSliderOverTime(waitTime));
             yield return new WaitForSeconds(waitTime); // Wait for specified seconds
-            CollectMoney();
+            while (!LaunchService())
+            {
+                //wait until can afford
+                yield return new WaitForSeconds(0.1f);
+            }
+            
         }
     }
 
@@ -107,12 +116,12 @@ public class IncomeGenerator : MonoBehaviour
     {
         if (!isAutomatic && canCollect)
         {
-            CollectMoney();
-            StartCoroutine(ManualIncomeCooldown());
+            if(LaunchService())
+                StartCoroutine(ManualServiceCooldown());
         }
     }
 
-    IEnumerator ManualIncomeCooldown()
+    IEnumerator ManualServiceCooldown()
     {
         canCollect = false;
         StartCoroutine(UI.FillSliderOverTime(waitTime));
@@ -120,10 +129,15 @@ public class IncomeGenerator : MonoBehaviour
         canCollect = true;
     }
 
-    void CollectMoney()
+    bool LaunchService()
     {
-        GM.AddDono(collectionAmount); // Add Dono
-        playAudio("CollectMoney");
+        if (GM.donationValue < CostToRun)
+            return false;
+        
+        GM.SpendDono(CostToRun);
+        GM.AddImpact(PeopleHelped); // Add Dono
+        playAudio("HelpedPeople");
+        return true;
     }
 
     // Method to toggle the automatic mode via script
@@ -145,22 +159,22 @@ public class IncomeGenerator : MonoBehaviour
             }
         }
     }
-
+    
     public void BuyUpgrade()
     {
         if (upgrades.upgradesInOrder.Count == 0 || upgrades.upgradesInOrder[0].cost > GM.donationValue)
         {
             print("failed to buy Upgrade");
-            playAudio("Error");
             return;
         }
         
-        playAudio("Upgrade");
         GM.SpendDono(upgrades.upgradesInOrder[0].cost);        
         waitTime = upgrades.upgradesInOrder[0].waitTime;
-        collectionAmount = upgrades.upgradesInOrder[0].collectionAmount;
+        PeopleHelped = upgrades.upgradesInOrder[0].peopleHelped;
+        CostToRun = upgrades.upgradesInOrder[0].costToRun;
         UI.ChangeField("Cooldown", waitTime + "s");
-        UI.ChangeField("Income",  "€" + collectionAmount);
+        UI.ChangeField("Income",  "€" + PeopleHelped);
+        UI.ChangeField("Cost", "€" + CostToRun);
 
         upgrades.upgradesInOrder.RemoveAt(0);
         
