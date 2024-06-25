@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using System.Linq;
 
 public class IncomeGenerator : MonoBehaviour
 {
@@ -105,11 +107,20 @@ public class IncomeGenerator : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!isAutomatic && canCollect)
+        if (!isAutomatic && canCollect && !IsPointerOverUIElement())
         {
             CollectMoney();
             StartCoroutine(ManualIncomeCooldown());
         }
+    }
+    
+    public static bool IsPointerOverUIElement()
+    {
+        var eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+        return results.Where(r => r.gameObject.layer == 5).Count() > 0;
     }
 
     IEnumerator ManualIncomeCooldown()
