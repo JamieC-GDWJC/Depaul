@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7046052383360170383}
   - component: {fileID: 1629978679801647179}
   - component: {fileID: 4557210384862459845}
+  - component: {fileID: 1460059197468094211}
   m_Layer: 0
   m_Name: IncomeAsset
   m_TagString: Untagged
@@ -50,17 +51,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b70c71311f3ffe448cbef83e9465dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 1
+  waitTime: 2.5
   isAutomatic: 0
   collectionAmount: 1
   clipList:
   - key: CollectMoney
     clip: {fileID: 8300000, guid: e42bf66155b36724d879ee670f1fcb04, type: 3}
+  - key: Error
+    clip: {fileID: 8300000, guid: d82b3e379fb912f44a31f287ca71df31, type: 3}
+  - key: Upgrade
+    clip: {fileID: 8300000, guid: d89edb2a08c21084dbe1392efb1c9f70, type: 3}
   upgrades:
     upgradesInOrder:
-    - cost: 2
+    - cost: 5
       waitTime: 2
-      collectionAmount: 2
+      collectionAmount: 1
 --- !u!114 &-8491286200841834626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +152,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   needsInteraction: 0
   speed: 10
+--- !u!114 &1460059197468094211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2553208389487187535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2e09a37103f4949803b863a5cfc1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoClickActive: 0
+  active: 0
 --- !u!1001 &8542785438461390746
 PrefabInstance:
   m_ObjectHideFlags: 0

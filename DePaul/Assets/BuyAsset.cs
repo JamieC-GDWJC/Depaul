@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BuyAsset : MonoBehaviour
@@ -8,6 +6,7 @@ public class BuyAsset : MonoBehaviour
     public int cost;
     private GameManager GM;
     private AudioManager AM;
+    private ExternalCommunication _externalCommunication;
 
     [SerializeField] private AudioClip boughtAudioClip;
     [SerializeField] private AudioClip errorAudioClip;
@@ -17,12 +16,7 @@ public class BuyAsset : MonoBehaviour
     {
         GM = FindObjectOfType<GameManager>();
         AM = GM.GetComponent<AudioManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        _externalCommunication = GetComponent<ExternalCommunication>();
     }
 
     public void Buy()
@@ -30,6 +24,7 @@ public class BuyAsset : MonoBehaviour
         if (!Unlocked && GM.donationValue >= cost)
         {
             Unlocked = true;
+            _externalCommunication.active = true;
             GM.SpendDono(cost);
             AM.PlaySource(clip: boughtAudioClip);
         }

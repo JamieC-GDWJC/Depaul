@@ -1,11 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
  
 [System.Serializable]
 public class Point
 {
-    public ExternalCommunication[] activeObjects;
+    public Vector3 CameraPositionAtStage;
+    public Vector3 CameraRotationAtStage;
+    public List<ExternalCommunication> AssetsToComplete;
 }
  
 [System.Serializable]

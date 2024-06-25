@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,129 +5,117 @@ using UnityEngine.UI;
 
 public class NarrativeController : MonoBehaviour
 {
-    public List<string> text;
+    public List<string> textList;
+    public string Title;
+    
+    [SerializeField] private int index = 0;
 
-    public int index = 0;
+    [SerializeField] private TMP_Text titleBox;
+    
 
-    public TMP_Text textBox;
+    [SerializeField] private RectTransform buttonNest;
+    [SerializeField] private RectTransform narrativeNest; 
+    
+    private TMP_Text textBox;
+    private Button nextButton;
+    private Button prevButton;
 
-    public TMP_Text nextButtonText;
-    public TMP_Text prevButtonText;
-
-    public Button nextButton;
-    public Button prevButton;
-
-    public NarList narList = new NarList();
-
-    public int stage = 0;
-    public bool done = false;
-    public int maxLines = 3;
-    public ExternalCommunication[] externalCommunications;
+    public string State = "Default";
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        textBox.text = text[index];
-        nextButtonText.text = "Next";
-        prevButtonText.text = "Previous";
+        
+        setUpVars();
+        ChangeState(State);
+        LoadLine(0);
+    }
+
+    private void setUpVars()
+    {
+        textBox = narrativeNest.Find("text box").GetComponent<TMP_Text>();
+        nextButton = narrativeNest.Find("continue").GetComponent<Button>();
+        prevButton = narrativeNest.Find("Back").GetComponent<Button>();
         prevButton.interactable = false;
-        stage = -1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (stage >= narList.Stage.Count || done)
-            return;
         
-        foreach (ExternalCommunication EC in externalCommunications)
-        {
-            if(!EC.active)
-                return;
-        }
-        ChangeStage();
     }
     
-    void ChangeStage()
+    public void LoadLine(int stage)
     {
-        stage ++;
-        if (stage >= narList.Stage.Count)
-        {
-            done = true;
-            GetComponent<StoryManager>().storiesActive = true;
+        if(textList.Count-1 < stage)
             return;
-        }
-        externalCommunications = narList.Stage[stage].activeObjects;
-        maxLines = narList.Stage[stage].Lines;
-        if (maxLines == 2)
-        {
-            return;
-        }
-        NextLine();
+        
+        if (titleBox.text != Title)
+            titleBox.text = Title;
+        
+        this.index = stage;
+        textList[this.index] = textList[this.index].Replace("\\n", "\n");
+        textBox.text = textList[this.index];
+        
+        CheckButtons();
     }
 
     public void NextLine()
     {
-        if(done)
-            return;
-        if (index >= maxLines)
-        {
-            return;
-        }
-        if (nextButtonText.text == "Close")
-        {
-            //DeactivateText();
-            textBox.text = "";
-            return;
-        }
-        index++;
-        textBox.text = text[index];
-        CheckNextButton();
-        CheckPrevButton();
+        this.index++;
+        LoadLine(this.index);
     }
 
     public void PreviousLine()
     {
-        if(done)
-            return;
-        index--;
-        textBox.text = text[index];
-        CheckNextButton();
-        CheckPrevButton();
+        this.index--;
+        LoadLine(this.index);
     }
 
-    void CheckNextButton()
+    private void CheckButtons()
     {
-        
-        if (index >= text.Count - 1)
-        {
-            nextButtonText.text = "Close";
-        }
+        if (index >= textList.Count-1)
+            nextButton.interactable = false;
         else
-        {
-            nextButtonText.text = "Next";
-        }
-    }
-    
-    void CheckPrevButton()
-    {
-        
+            nextButton.interactable = true;
         if (index == 0)
-        {
             prevButton.interactable = false;
-        }
         else
-        {
             prevButton.interactable = true;
-        }
     }
     
-    public void DeactivateText()
+    private void DeactivateText()
     {
         textBox.gameObject.SetActive(false);
     }
-    public void ActivateText()
+    private void ActivateText()
     {
         textBox.gameObject.SetActive(true);
+    }
+
+    public bool isAllTextRead()
+    {
+        if (index >= textList.Count - 1)
+            return true;
+        return false;
+    }
+
+    public void ChangeState(string newState)
+    {
+        switch (newState)
+        {
+            case "Default":
+                buttonNest.gameObject.SetActive(false);
+                narrativeNest.offsetMin = new Vector2(0,0);
+                break;
+            case "Story":
+                buttonNest.gameObject.SetActive(true);
+                narrativeNest.offsetMin = new Vector2(0,300);
+                break;
+            
+            default:
+                return;
+        }
+        State = newState;
     }
 }

@@ -1,71 +1,61 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.PlayerLoop;
 
 public class CameraManager : MonoBehaviour
 {
-    [Header("reference game manager to allign stages")]
-    public int[] zoomStages;
     public float speed;
-    public float zoomLevel;
+    public float duration = 1;
 
     public Vector3 startingPos;
-    public Vector3 endingPos;
+    public Vector3 startingRot;
+    private Vector3 endingPos;
+    private Vector3 endingRot;
 
-    public int stage = 0;
-
-    private float _currentZoom;
-    private float _targetZoom;
-
-    private float _sinTime;
-    
-    // Update is called once per frame
-    void UpdateCamera()
+    private void Start()
     {
-        float x = Mathf.Lerp(startingPos.x, endingPos.x, zoomLevel/100);
-        float y = Mathf.Lerp(startingPos.y, endingPos.y, zoomLevel/100);
-        float z = Mathf.Lerp(startingPos.z, endingPos.z, zoomLevel/100);
-        Vector3 pos = new Vector3(x,y,z);
-        transform.position = pos;
+        transform.position = startingPos;
+        transform.rotation = Quaternion.Euler(startingRot);
     }
 
     private void Update()
     {
-        if (!Mathf.Approximately(zoomLevel,_targetZoom))
-        {
-            _sinTime += Time.deltaTime * speed;
-            _sinTime = Mathf.Clamp(_sinTime, 0, Mathf.PI);
-            float t = Evaluate(_sinTime);
-            zoomLevel = Mathf.Lerp(_currentZoom, _targetZoom, t);
-            UpdateCamera();
-        }
-        
-        if (Input.GetKeyDown("space"))
-        {
-            SwitchStage(stage+1);
-        }
+        transform.position = Vector3.MoveTowards(transform.position, endingPos, speed * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(Vector3.MoveTowards(transform.rotation.eulerAngles, endingRot, speed * Time.deltaTime));
     }
     
-    public void SwitchStage(int stg)
+    private IEnumerator TransitionCoroutine(Vector3 startPos, Vector3 endPos, Vector3 startRot, Vector3 endRot, float time)
     {
-        if (stg >= zoomStages.Length)
-            return;
-        else
+        float elapsedTime = 0f;
+        while (elapsedTime < time)
         {
-            stage = stg;
-            _sinTime = 0;
-            _currentZoom = _targetZoom;
-            _targetZoom = zoomStages[stage];
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / time;
+
+            // Smooth step for easing
+            t = t * t * (3f - 2f * t);
+
+            // Lerp position
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+
+            // Lerp rotation
+            Quaternion startQuaternion = Quaternion.Euler(startRot);
+            Quaternion endQuaternion = Quaternion.Euler(endRot);
+            transform.rotation = Quaternion.Lerp(startQuaternion, endQuaternion, t);
+
+            yield return null;
         }
 
+        // Ensure the final position and rotation are exactly the target values
+        transform.position = endPos;
+        transform.rotation = Quaternion.Euler(endRot);
     }
 
-    public float Evaluate(float x)
+    
+    public void SwitchStage(Vector3 position, Vector3 rotation)
     {
-        return 0.5f * Mathf.Sin(x - Mathf.PI / 2f) + .5f;
+        endingPos = position;
+        endingRot = rotation;
+        StartCoroutine(TransitionCoroutine(transform.position, endingPos, transform.rotation.eulerAngles, endingRot, duration));
     }
+    
 }

@@ -26,6 +26,7 @@ public class IncomeGenerator : MonoBehaviour
     private UIController UI;
     private BuyAsset _buyAsset;
     private OutlineCommunication _outline;
+    private ExternalCommunication _externalCommunication;
     void Start()
     {
         GameObject manager = GameObject.FindWithTag("Manager"); 
@@ -34,6 +35,7 @@ public class IncomeGenerator : MonoBehaviour
         UI = GetComponent<UIController>();
         _buyAsset = GetComponent<BuyAsset>();
         _outline = GetComponent<OutlineCommunication>();
+        _externalCommunication = GetComponent<ExternalCommunication>();
         SetUpBuyUI();
     }
 

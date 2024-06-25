@@ -5,8 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class NarPoint
 {
-    public ExternalCommunication[] activeObjects;
-    public int Lines;
+    public List<ExternalCommunication> activeObjects;
+    public string Title;
+    public List<string> Lines;
 }
  
 [System.Serializable]

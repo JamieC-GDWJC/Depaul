@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class ProgressionManager : MonoBehaviour
 {
@@ -12,7 +10,7 @@ public class ProgressionManager : MonoBehaviour
     public bool done = false;
     private CameraManager _cameraM;
 
-    public ExternalCommunication[] externalCommunications;
+    public List<ExternalCommunication> externalCommunications;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,12 +38,13 @@ public class ProgressionManager : MonoBehaviour
     void ChangeStage()
     {
         stage ++;
-        _cameraM.SwitchStage(stage);
+        
         if (stage >= listOfStages.Stage.Count)
         {
             done = true;
             return;
         }
-        externalCommunications = listOfStages.Stage[stage].activeObjects;
+        _cameraM.SwitchStage(listOfStages.Stage[stage].CameraPositionAtStage, listOfStages.Stage[stage].CameraRotationAtStage);
+        externalCommunications = listOfStages.Stage[stage].AssetsToComplete;
     }
 }

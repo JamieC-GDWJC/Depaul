@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -64,6 +64,7 @@ public class UIController : MonoBehaviour
         contentLayoutGroup = Bubble.transform.Find("BubbleUI/Content").GetComponent<VerticalLayoutGroup>();
         
         progressSlider = Bubble.transform.Find("BubbleUI/Progress/Slider").GetComponent<Slider>();
+        
     }
     
     public void ResetButton()
@@ -94,7 +95,7 @@ public class UIController : MonoBehaviour
         module.transform.Find("Text").GetComponent<TMP_Text>().text = content;
         InfoModules.Add(module);
 
-        StartCoroutine(UpdateLayoutGroup());
+        //StartCoroutine(UpdateLayoutGroup());
     }
 
     public void ChangeField(string field, string content)
@@ -157,6 +158,7 @@ public class UIController : MonoBehaviour
 
     public void ShowUI(bool show)
     {
+        StartCoroutine(UpdateLayoutGroup());
         timer = 0;
         isShowing = show;
         //print("show UI: " + show);
@@ -205,7 +207,8 @@ public class UIController : MonoBehaviour
     
     private void OnMouseEnter()
     {
-        ShowUI(true);
+        if(!IsPointerOverUIElement())
+            ShowUI(true);
     }
 
     private void OnMouseOver()
@@ -223,6 +226,15 @@ public class UIController : MonoBehaviour
             yield return null;
         }
         progressSlider.value = 1f; // Ensure the slider is set to 1 at the end
+    }
+    
+    public static bool IsPointerOverUIElement()
+    {
+        var eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+        return results.Where(r => r.gameObject.layer == LayerMask.NameToLayer("UI")).Count() > 0;
     }
 }
 
