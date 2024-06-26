@@ -1,7 +1,11 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class NarrativeController : MonoBehaviour
 {
@@ -16,9 +20,14 @@ public class NarrativeController : MonoBehaviour
     [SerializeField] private RectTransform buttonNest;
     [SerializeField] private RectTransform narrativeNest; 
     
+    //narrative
     private TMP_Text textBox;
     private Button nextButton;
     private Button prevButton;
+    
+    //story
+    private Scenario story;
+    private bool deleteCurrentLine = false;
 
     public string State = "Default";
     
@@ -44,6 +53,33 @@ public class NarrativeController : MonoBehaviour
     {
         
     }
+
+    public void LoadStory(Scenario scenario)
+    {
+        story = scenario;
+        ChangeState("Story");
+
+        titleBox.text = scenario.title;
+        textList = scenario.story;
+        LoadLine(0);
+
+        int one = Random.Range(1, 4);
+        int two = one;
+        int three = one;
+        while (two == one)
+        {
+            two = Random.Range(1, 4);
+        }
+        while (three == one || three == two)
+        {
+            three = Random.Range(1, 4);
+        }
+        
+        print($"{one},{two},{three}");
+        buttonNest.Find($"Option {one}").GetChild(0).GetComponent<TMP_Text>().text = scenario.optionOne.name;
+        buttonNest.Find($"Option {two}").GetChild(0).GetComponent<TMP_Text>().text = scenario.optionTwo.name;
+        buttonNest.Find($"Option {three}").GetChild(0).GetComponent<TMP_Text>().text = scenario.correctOption.name;
+    }
     
     public void LoadLine(int stage)
     {
@@ -62,7 +98,12 @@ public class NarrativeController : MonoBehaviour
 
     public void NextLine()
     {
-        this.index++;
+        if (deleteCurrentLine)
+            textList.RemoveAt(0);
+        else
+            this.index++;
+
+        deleteCurrentLine = false;
         LoadLine(this.index);
     }
 
@@ -117,5 +158,40 @@ public class NarrativeController : MonoBehaviour
                 return;
         }
         State = newState;
+    }
+
+    private void ResetToDefault()
+    {
+        ChangeState("Default");
+        textList.Clear();
+        Title = "";
+        textBox.text = "";
+        titleBox.text = "";
+    }
+
+    public void CheckStoryButton(Button buttonClicked)
+    {
+        if (deleteCurrentLine)
+        {
+            textList.RemoveAt(0);
+        }
+        if (buttonClicked.transform.GetChild(0).GetComponent<TMP_Text>().text == story.correctOption.name)
+        {
+            textList.Insert(0,story.correctOptionReason);
+            Invoke(nameof(ResetToDefault),5);
+            LoadLine(0);
+        }
+        else if(buttonClicked.transform.GetChild(0).GetComponent<TMP_Text>().text == story.optionOne.name)
+        {
+            textList.Insert(0,story.optionOneReason);
+            LoadLine(0);
+            deleteCurrentLine = true;
+        }
+        else if(buttonClicked.transform.GetChild(0).GetComponent<TMP_Text>().text == story.optionTwo.name)
+        {
+            textList.Insert(0,story.optionTwoReason);
+            LoadLine(0);
+            deleteCurrentLine = true;
+        }
     }
 }

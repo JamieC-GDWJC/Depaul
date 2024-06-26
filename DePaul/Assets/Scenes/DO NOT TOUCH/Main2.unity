@@ -247,6 +247,18 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!114 &276532877 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+    type: 3}
+  m_PrefabInstance: {fileID: 8794804316216047477}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &431287672 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8914757973401831997, guid: 02aa809e8d5111f4ab723b0c98ba8877,
@@ -267,6 +279,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AutoClickActive: 0
   active: 0
+--- !u!114 &462802541 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+    type: 3}
+  m_PrefabInstance: {fileID: 8794804316216047477}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &565694795 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5880675764534638526, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
@@ -435,6 +459,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2e09a37103f4949803b863a5cfc1a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1349374978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1349374980}
+  - component: {fileID: 1349374979}
+  m_Layer: 0
+  m_Name: Popup Stories
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1349374979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349374978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35621029c68972d43b03b789fc4c0de4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scenarios:
+  - title: Amy's Story
+    story:
+    - Amy is homless and needs somewhere to stay!
+    - test for second line
+    optionOne: {fileID: 1188028048}
+    optionOneReason: nope1
+    optionTwo: {fileID: 1425977534}
+    optionTwoReason: nope2
+    correctOption: {fileID: 431287680}
+    correctOptionReason: correct
+  - title: poop
+    story:
+    - Amy is homless and needs somewhere to stay!
+    optionOne: {fileID: 431287680}
+    optionOneReason: corrrect
+    optionTwo: {fileID: 1425977534}
+    optionTwoReason: nope
+    correctOption: {fileID: 1188028048}
+    correctOptionReason: 
+--- !u!4 &1349374980
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349374978}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1391.6666, y: 328.46997, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1389216229
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,12 +642,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1727841699 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5240094136296285722, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
-    type: 3}
-  m_PrefabInstance: {fileID: 8794804316216047477}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1847051578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -722,8 +804,8 @@ GameObject:
   - component: {fileID: 1883684969}
   - component: {fileID: 1883684970}
   - component: {fileID: 1883684972}
-  - component: {fileID: 1883684973}
   - component: {fileID: 1883684974}
+  - component: {fileID: 1883684973}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Manager
@@ -834,25 +916,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f387f0ae9d16d64a81ede6c20b1495a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialBlockingPanel: {fileID: 1727841699}
-  progList:
-    Stage:
-    - activeObjects:
-      - {fileID: 1425977534}
-      Title: First Collection
-      Lines:
-      - Hi there!\nWelcome to Depaul!\nHere you will learn everything we do as a
-        charity and how we work!
-      - To get started, go ahead and buy the bucket stand in the middle of the play
-        area!
-    - activeObjects:
-      - {fileID: 431287680}
-      Title: Start Helping
-      Lines:
-      - Once we get a bit of money, we can use that money to help other!
-      - collect enough money to set up your first hostel! These hostels cost money
-        to run! so be mindfull of how much you spend! rember the objective is to
-        help as many people as possible!
+  narationStages:
+  - Title: Income!
+    Lines:
+    - You need to buy the bucket stand
+    - Go ahead click on it!
+    activeObjects:
+    - {fileID: 1425977534}
+  - Title: Helping!
+    Lines:
+    - Now that you have Donations you need to use them to help the homeless
+    - go ahead and save up enough money to unlock the Backlane Hostel!
+    activeObjects:
+    - {fileID: 431287680}
   assetsToActivate: []
 --- !u!114 &1883684974
 MonoBehaviour:
@@ -1037,6 +1113,18 @@ MonoBehaviour:
   duration: 1
   startingPos: {x: 0.5, y: 2, z: -2}
   startingRot: {x: 33, y: 0, z: 0}
+--- !u!114 &2146025768 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+    type: 3}
+  m_PrefabInstance: {fileID: 8794804316216047477}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5210448989835511408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1250,16 +1338,161 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1883684972}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CheckStoryButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NarrativeController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2146025768}
+    - target: {fileID: 675285311501905312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.UI.Button, UnityEngine.UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1203217375380580243, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_Name
+      value: Text
+      objectReference: {fileID: 0}
     - target: {fileID: 1358264373767077428, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1883684972}
+    - target: {fileID: 1415797441627885312, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_Name
+      value: Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1883684972}
+    - target: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CheckStoryButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NarrativeController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 276532877}
+    - target: {fileID: 3258094264470626302, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.UI.Button, UnityEngine.UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106580471735398997, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_Name
+      value: Text
+      objectReference: {fileID: 0}
     - target: {fileID: 5277104393259933262, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1883684972}
+    - target: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1883684972}
+    - target: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CheckStoryButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NarrativeController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 462802541}
+    - target: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.UI.Button, UnityEngine.UI
+      objectReference: {fileID: 0}
     - target: {fileID: 6691841829381222260, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
         type: 3}
       propertyPath: m_Name
@@ -1395,3 +1628,4 @@ SceneRoots:
   - {fileID: 1847051578}
   - {fileID: 1389216232}
   - {fileID: 6414191911900357579}
+  - {fileID: 1349374980}
