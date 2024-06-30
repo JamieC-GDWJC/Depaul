@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,8 +23,10 @@ public class NarrativeController : MonoBehaviour
     private Button prevButton;
     
     //story
-    private Scenario story;
+    private StoryScenario story;
     private bool deleteCurrentLine = false;
+
+    private List<TMP_Text> buttonList = new List<TMP_Text>();
 
     public string State = "Default";
     
@@ -46,6 +45,14 @@ public class NarrativeController : MonoBehaviour
         nextButton = narrativeNest.Find("continue").GetComponent<Button>();
         prevButton = narrativeNest.Find("Back").GetComponent<Button>();
         prevButton.interactable = false;
+
+        TMP_Text button1 = buttonNest.Find($"Option 1").GetChild(0).GetComponent<TMP_Text>();
+        buttonList.Add(button1);
+        TMP_Text button2 = buttonNest.Find($"Option 2").GetChild(0).GetComponent<TMP_Text>();
+        buttonList.Add(button2);
+        TMP_Text button3 = buttonNest.Find($"Option 3").GetChild(0).GetComponent<TMP_Text>();
+        buttonList.Add(button3);
+        
     }
 
     // Update is called once per frame
@@ -54,31 +61,29 @@ public class NarrativeController : MonoBehaviour
         
     }
 
-    public void LoadStory(Scenario scenario)
+    public void LoadStory(StoryScenario storyScenario)
     {
-        story = scenario;
+        story = storyScenario;
         ChangeState("Story");
 
-        titleBox.text = scenario.title;
-        textList = scenario.story;
+        titleBox.text = storyScenario.title;
+        textList = storyScenario.story;
         LoadLine(0);
 
-        int one = Random.Range(1, 4);
+        int one = Random.Range(0, 3);
         int two = one;
         int three = one;
         while (two == one)
         {
-            two = Random.Range(1, 4);
+            two = Random.Range(0, 3);
         }
         while (three == one || three == two)
         {
-            three = Random.Range(1, 4);
+            three = Random.Range(0, 3);
         }
-        
-        print($"{one},{two},{three}");
-        buttonNest.Find($"Option {one}").GetChild(0).GetComponent<TMP_Text>().text = scenario.optionOne.name;
-        buttonNest.Find($"Option {two}").GetChild(0).GetComponent<TMP_Text>().text = scenario.optionTwo.name;
-        buttonNest.Find($"Option {three}").GetChild(0).GetComponent<TMP_Text>().text = scenario.correctOption.name;
+        buttonList[one].text = storyScenario.o1.name;
+        buttonList[two].text = storyScenario.o1.name;
+        buttonList[three].text = storyScenario.o1.name;
     }
     
     public void LoadLine(int stage)
@@ -181,15 +186,15 @@ public class NarrativeController : MonoBehaviour
             Invoke(nameof(ResetToDefault),5);
             LoadLine(0);
         }
-        else if(buttonClicked.transform.GetChild(0).GetComponent<TMP_Text>().text == story.optionOne.name)
+        else if(buttonClicked.transform.GetChild(0).GetComponent<TMP_Text>().text == story.o1.name)
         {
-            textList.Insert(0,story.optionOneReason);
+            textList.Insert(0,story.o1Reason);
             LoadLine(0);
             deleteCurrentLine = true;
         }
-        else if(buttonClicked.transform.GetChild(0).GetComponent<TMP_Text>().text == story.optionTwo.name)
+        else if(buttonClicked.transform.GetChild(0).GetComponent<TMP_Text>().text == story.o2.name)
         {
-            textList.Insert(0,story.optionTwoReason);
+            textList.Insert(0,story.o2Reason);
             LoadLine(0);
             deleteCurrentLine = true;
         }

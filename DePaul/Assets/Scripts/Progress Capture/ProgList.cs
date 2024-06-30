@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [System.Serializable]
 public class Point
@@ -17,15 +16,15 @@ public class PointList
 }
 
 [System.Serializable]
-public class Scenario
+public class StoryScenario
 {
     public string title;
     public List<string> story;
 
-    public ExternalCommunication optionOne;
-    public string optionOneReason;
-    public ExternalCommunication optionTwo;
-    public string optionTwoReason;
+    public ExternalCommunication o1;
+    public string o1Reason;
+    public ExternalCommunication o2;
+    public string o2Reason;
     public ExternalCommunication correctOption;
     public string correctOptionReason;
 
@@ -38,4 +37,21 @@ public class NarPoint
     public string Title;
     public List<string> Lines;
     public List<ExternalCommunication> activeObjects;
+}
+
+[System.Serializable]
+public class PopupScenario
+{
+    public string title;
+    public List<string> story;
+
+    public ExternalCommunication affectedAsset;
+
+    public int cost;
+    public float time;
+
+    public int peopleHelped;
+    public int donationesEarned;
+
+    public bool complete = false;
 }

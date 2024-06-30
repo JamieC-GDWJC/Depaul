@@ -8,13 +8,20 @@ public class ProgressionManager : MonoBehaviour
 
     public int stage;
     public bool done = false;
+    [SerializeField] private int stageStoriesActivate;
+    [SerializeField] private int stagePopUpsActivate;
+   
     private CameraManager _cameraM;
+    private Stories _stories;
+    private Popups _popups;
 
     public List<ExternalCommunication> externalCommunications;
     // Start is called before the first frame update
     void Start()
     {
         _cameraM = FindObjectOfType<CameraManager>();
+        _stories = FindObjectOfType<Stories>();
+        _popups = FindObjectOfType<Popups>();
         stage = -1;
 
         ChangeStage();
@@ -38,6 +45,12 @@ public class ProgressionManager : MonoBehaviour
     void ChangeStage()
     {
         stage ++;
+
+        if (stageStoriesActivate <= stage)
+            _stories.ActivatePopupStories(true);
+        
+        if(stagePopUpsActivate <= stage)
+            _popups.ActivatePopupStories(true);
         
         if (stage >= listOfStages.Stage.Count)
         {

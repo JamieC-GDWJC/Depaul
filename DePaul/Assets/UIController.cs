@@ -15,6 +15,8 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject InfoModule;
     [SerializeField] private float UIOffset;
+
+    public bool instantiated = false;
     
     public delegate void DelegateVoid();
     public DelegateVoid Function;
@@ -30,10 +32,10 @@ public class UIController : MonoBehaviour
     VerticalLayoutGroup contentLayoutGroup;
 
     private BuyAsset _buyAsset;
-
     private Camera mainCamera;
 
     private bool isShowing;
+    public bool isPopup;
     // Start is called before the first frame update
     void Awake()
     {
@@ -49,8 +51,14 @@ public class UIController : MonoBehaviour
 
     void InstantiateUI()
     {
+        if(isPopup)
+            print("INSTANTIATING THE UIIIIIIIIIIIIIIIIIIIIIIIIII");
         Bubble = Instantiate(UIBubble,canvasGameObject.transform);
-        Bubble.name = gameObject.name;
+
+        if (!isPopup)
+            Bubble.name = gameObject.name;
+        else 
+            Bubble.name = gameObject.name + " POPUP";
         
         infoLocation = Bubble.transform.Find("BubbleUI/Content/Info");
         
@@ -64,8 +72,9 @@ public class UIController : MonoBehaviour
         contentLayoutGroup = Bubble.transform.Find("BubbleUI/Content").GetComponent<VerticalLayoutGroup>();
         
         progressSlider = Bubble.transform.Find("BubbleUI/Progress/Slider").GetComponent<Slider>();
-        
+        instantiated = true;
     }
+    
     
     public void ResetButton()
     {
@@ -86,6 +95,8 @@ public class UIController : MonoBehaviour
             module = Instantiate(InfoModule, infoLocation);
         else
         {
+            print(InfoModule);
+            print(buyLocation.transform);
             module = Instantiate(InfoModule, buyLocation.transform);
             module.transform.localPosition = new Vector3(0,0,0);
         }
@@ -145,6 +156,9 @@ public class UIController : MonoBehaviour
             Bubble.transform.position = pos;
         }
 
+        if(isPopup)
+            return;
+        
         timer += Time.deltaTime;
         if (timer >= cooldownTime)
         {
@@ -236,6 +250,13 @@ public class UIController : MonoBehaviour
         EventSystem.current.RaycastAll(eventData, results);
         return results.Where(r => r.gameObject.layer == LayerMask.NameToLayer("UI")).Count() > 0;
     }
+
+    public void DestroyUI()
+    {
+        Destroy(Bubble);
+        Destroy(this);
+    }
+    
 }
 
 

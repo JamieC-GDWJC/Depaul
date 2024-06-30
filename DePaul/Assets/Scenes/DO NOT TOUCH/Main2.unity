@@ -469,8 +469,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1349374980}
   - component: {fileID: 1349374979}
+  - component: {fileID: 1349374981}
   m_Layer: 0
-  m_Name: Popup Stories
+  m_Name: Popups and Stories
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -488,26 +489,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35621029c68972d43b03b789fc4c0de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  active: 0
   scenarios:
   - title: Amy's Story
     story:
     - Amy is homless and needs somewhere to stay!
     - test for second line
-    optionOne: {fileID: 1188028048}
-    optionOneReason: nope1
-    optionTwo: {fileID: 1425977534}
-    optionTwoReason: nope2
+    o1: {fileID: 0}
+    o1Reason: 
+    o2: {fileID: 0}
+    o2Reason: 
     correctOption: {fileID: 431287680}
     correctOptionReason: correct
+    peopleHelped: 0
   - title: poop
     story:
     - Amy is homless and needs somewhere to stay!
-    optionOne: {fileID: 431287680}
-    optionOneReason: corrrect
-    optionTwo: {fileID: 1425977534}
-    optionTwoReason: nope
+    o1: {fileID: 0}
+    o1Reason: 
+    o2: {fileID: 0}
+    o2Reason: 
     correctOption: {fileID: 1188028048}
     correctOptionReason: 
+    peopleHelped: 0
+  invokeTimer: 2
 --- !u!4 &1349374980
 Transform:
   m_ObjectHideFlags: 0
@@ -523,6 +528,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1349374981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349374978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72172852fe62030418a24c23facdb2d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  scenarios:
+  - title: Popup Test
+    story: []
+    affectedAsset: {fileID: 431287680}
+    cost: 5
+    time: 5
+    peopleHelped: 100
+    donationesEarned: 0
+  - title: Popup Test
+    story: []
+    affectedAsset: {fileID: 431287680}
+    cost: 5
+    time: 5
+    peopleHelped: 100
+    donationesEarned: 0
+  invokeTimer: 5
 --- !u!1 &1389216229
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,6 +992,8 @@ MonoBehaviour:
       - {fileID: 1188028048}
   stage: 0
   done: 0
+  stageStoriesActivate: 5
+  stagePopUpsActivate: 1
   externalCommunications: []
 --- !u!1 &1980960469
 GameObject:
@@ -1229,7 +1265,7 @@ PrefabInstance:
     - target: {fileID: 2318139044295064183, guid: 02aa809e8d5111f4ab723b0c98ba8877,
         type: 3}
       propertyPath: upgrades.upgradesInOrder.Array.data[1].cost
-      value: 22
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2318139044295064183, guid: 02aa809e8d5111f4ab723b0c98ba8877,
         type: 3}
@@ -1264,7 +1300,12 @@ PrefabInstance:
     - target: {fileID: 3048143640228254017, guid: 02aa809e8d5111f4ab723b0c98ba8877,
         type: 3}
       propertyPath: cost
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3048143640228254017, guid: 02aa809e8d5111f4ab723b0c98ba8877,
+        type: 3}
+      propertyPath: Unlocked
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3475207598132828242, guid: 02aa809e8d5111f4ab723b0c98ba8877,
         type: 3}

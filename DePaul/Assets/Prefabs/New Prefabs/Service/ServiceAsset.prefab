@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 4102685067518983643}
   - component: {fileID: 5497764444037820840}
   - component: {fileID: 7305632176099790391}
+  - component: {fileID: 3742728940369794240}
   m_Layer: 0
   m_Name: ServiceAsset
   m_TagString: Untagged
@@ -133,15 +134,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d51660785fc08314eb7cea340fb2b9f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 1
+  waitTime: 10
   isAutomatic: 0
-  PeopleHelped: 1
-  CostToRun: 1
+  PeopleHelped: 10
+  CostToRun: 5
   clipList:
   - key: HelpedPeople
     clip: {fileID: 8300000, guid: ce7d5d247a224664c80c5388dc098329, type: 3}
   upgrades:
-    upgradesInOrder: []
+    upgradesInOrder:
+    - cost: 20
+      waitTime: 10
+      peopleHelped: 30
+      costToRun: 5
+    - cost: 30
+      waitTime: 10
+      peopleHelped: 62
+      costToRun: 5
 --- !u!114 &2316413395502539115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,6 +168,8 @@ MonoBehaviour:
   InfoModule: {fileID: 8853916463912821365, guid: 3f888a39fefd3b24db8b4afb8822544a,
     type: 3}
   UIOffset: 0
+  instantiated: 0
+  isPopup: 0
 --- !u!114 &3048143640228254017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Unlocked: 0
-  cost: 1
+  cost: 5
   boughtAudioClip: {fileID: 8300000, guid: 14d3a4eba8241ec4597b6210050e3cc3, type: 3}
   errorAudioClip: {fileID: 8300000, guid: d82b3e379fb912f44a31f287ca71df31, type: 3}
 --- !u!65 &4102685067518983643
@@ -228,3 +239,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   needsInteraction: 0
   speed: 10
+--- !u!114 &3742728940369794240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914757973401831997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2e09a37103f4949803b863a5cfc1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoClickActive: 0
+  active: 0
