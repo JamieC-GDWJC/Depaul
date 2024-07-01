@@ -29,7 +29,7 @@ public class TutorialScript : MonoBehaviour
         {
             CancelInvoke();
         }
-        print("stage: " + stage);
+        //print("stage: " + stage);
         _index = stage;
         
         assetsToActivate.Clear(); 
@@ -62,7 +62,7 @@ public class TutorialScript : MonoBehaviour
     void ChangeTutorialStage()
     {
 
-        print("check if stage is complete");
+        //print("check if stage is complete");
         if (CheckIfStageIsComplete())
         {
             print("next Stage!");

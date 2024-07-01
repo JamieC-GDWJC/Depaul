@@ -46,10 +46,10 @@ public class ProgressionManager : MonoBehaviour
     {
         stage ++;
 
-        if (stageStoriesActivate <= stage)
+        if (stageStoriesActivate <= stage && !_stories.active)
             _stories.ActivatePopupStories(true);
         
-        if(stagePopUpsActivate <= stage)
+        if(stagePopUpsActivate <= stage && !_popups.active)
             _popups.ActivatePopupStories(true);
         
         if (stage >= listOfStages.Stage.Count)

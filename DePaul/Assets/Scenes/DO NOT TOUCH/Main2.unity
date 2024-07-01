@@ -259,26 +259,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &431287672 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8914757973401831997, guid: 02aa809e8d5111f4ab723b0c98ba8877,
+--- !u!114 &431287681 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3742728940369794240, guid: 02aa809e8d5111f4ab723b0c98ba8877,
     type: 3}
   m_PrefabInstance: {fileID: 6414191911900357579}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &431287680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 431287672}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f2e09a37103f4949803b863a5cfc1a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AutoClickActive: 0
-  active: 0
 --- !u!114 &462802541 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5842990726984822372, guid: ead3ed194f6e0e045aa918aa9f1b5abd,
@@ -499,7 +491,7 @@ MonoBehaviour:
     o1Reason: 
     o2: {fileID: 0}
     o2Reason: 
-    correctOption: {fileID: 431287680}
+    correctOption: {fileID: 0}
     correctOptionReason: correct
     peopleHelped: 0
   - title: poop
@@ -540,22 +532,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72172852fe62030418a24c23facdb2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   scenarios:
   - title: Popup Test
-    story: []
-    affectedAsset: {fileID: 431287680}
+    story:
+    - hemlo
+    affectedAsset: {fileID: 431287681}
     cost: 5
     time: 5
     peopleHelped: 100
     donationesEarned: 0
+    complete: 0
   - title: Popup Test
     story: []
-    affectedAsset: {fileID: 431287680}
+    affectedAsset: {fileID: 0}
     cost: 5
     time: 5
     peopleHelped: 100
     donationesEarned: 0
+    complete: 0
+  uiControllerPreset: {fileID: 2655988077585873504, guid: cf8f9e4f8598f0a40978e7186808307d,
+    type: 2}
   invokeTimer: 5
 --- !u!1 &1389216229
 GameObject:
@@ -859,7 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ce3dd211d6aeb14aacd10f6a668db38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  donationValue: 1
+  donationValue: 339
   donationPreText: 
   impactValue: 0
   impactPreText: 
@@ -919,6 +916,10 @@ MonoBehaviour:
     Type: Income
   - Icon: {fileID: 21300000, guid: 9e6096178861d7d42a2c57d62d10386f, type: 3}
     Type: Buy
+  UIBubble: {fileID: 5051898220001116828, guid: 54c3f98b4f72cea42ad96ca033210fe5,
+    type: 3}
+  InfoModule: {fileID: 8853916463912821365, guid: 3f888a39fefd3b24db8b4afb8822544a,
+    type: 3}
 --- !u!114 &1883684972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -945,7 +946,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883684966}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f387f0ae9d16d64a81ede6c20b1495a, type: 3}
   m_Name: 
@@ -962,7 +963,7 @@ MonoBehaviour:
     - Now that you have Donations you need to use them to help the homeless
     - go ahead and save up enough money to unlock the Backlane Hostel!
     activeObjects:
-    - {fileID: 431287680}
+    - {fileID: 431287681}
   assetsToActivate: []
 --- !u!114 &1883684974
 MonoBehaviour:
@@ -985,7 +986,7 @@ MonoBehaviour:
     - CameraPositionAtStage: {x: -0.5, y: 3.45, z: -4.03}
       CameraRotationAtStage: {x: 25, y: 0, z: 0}
       AssetsToComplete:
-      - {fileID: 431287680}
+      - {fileID: 431287681}
     - CameraPositionAtStage: {x: 1.5, y: 5, z: -5}
       CameraRotationAtStage: {x: 35, y: 0, z: 0}
       AssetsToComplete:
@@ -1237,6 +1238,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2316413395502539115, guid: 02aa809e8d5111f4ab723b0c98ba8877,
+        type: 3}
+      propertyPath: instantiated
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2318139044295064183, guid: 02aa809e8d5111f4ab723b0c98ba8877,
         type: 3}
       propertyPath: waitTime
@@ -1365,11 +1371,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8914757973401831997, guid: 02aa809e8d5111f4ab723b0c98ba8877,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 431287680}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02aa809e8d5111f4ab723b0c98ba8877, type: 3}
 --- !u!1001 &8794804316216047477
 PrefabInstance:

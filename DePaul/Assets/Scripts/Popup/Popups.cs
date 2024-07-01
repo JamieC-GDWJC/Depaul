@@ -44,30 +44,38 @@ public class Popups : MonoBehaviour
 
     IEnumerator Popup()
     {
-        yield return new WaitUntil(() => active && scenarios[index].affectedAsset.active);
+        print("attemping popup");
+        yield return new WaitUntil(() => scenarios[index].affectedAsset.active);
 
         setPanel(true);
         //_narrativeController.LoadStory(scenarios[index]);
         PopupScenario scenario = scenarios[index];
         
-        uiControllerPreset.ApplyTo( currentActivePopup = scenario.affectedAsset.AddComponent<UIController>());
+        currentActivePopup = scenario.affectedAsset.AddComponent<UIController>();
         currentActivePopup.isPopup = true;
         
         yield return new WaitUntil(() => currentActivePopup.instantiated);
+        print("passed instantiation");
         currentActivePopup.AddInfoField("Buy", scenario.cost.ToString(),false);
         currentActivePopup.AddInfoField("Cooldown", scenario.time.ToString());
         
         if(scenario.peopleHelped != 0)
-            currentActivePopup.AddInfoField("peopleHelped", scenario.peopleHelped.ToString());
-        if(scenario.peopleHelped != 0)
+            currentActivePopup.AddInfoField("People Helped", scenario.peopleHelped.ToString());
+        
+        if(scenario.donationesEarned != 0)
             currentActivePopup.AddInfoField("Income", scenario.donationesEarned.ToString());
         
         currentActivePopup.ShowUI(true);
+        currentActivePopup.Function = BuyPopup;
         
         index++;
 
         yield return new WaitUntil(() => scenario.complete);
         currentActivePopup.DestroyUI();
+    }
+
+    void BuyPopup()
+    {
         
     }
     

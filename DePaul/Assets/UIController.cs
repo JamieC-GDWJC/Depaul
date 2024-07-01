@@ -11,9 +11,6 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     private GameObject canvasGameObject;
-    [SerializeField] private GameObject UIBubble;
-
-    [SerializeField] private GameObject InfoModule;
     [SerializeField] private float UIOffset;
 
     public bool instantiated = false;
@@ -27,6 +24,8 @@ public class UIController : MonoBehaviour
     private Button buyLocation;
     private Transform nameLocation;
     private Slider progressSlider;
+
+    private RectTransform bubbleBackground;
     
     private InfoModuleTypes moduleTypes;
     VerticalLayoutGroup contentLayoutGroup;
@@ -51,14 +50,10 @@ public class UIController : MonoBehaviour
 
     void InstantiateUI()
     {
-        if(isPopup)
-            print("INSTANTIATING THE UIIIIIIIIIIIIIIIIIIIIIIIIII");
-        Bubble = Instantiate(UIBubble,canvasGameObject.transform);
+        
+        Bubble = Instantiate(moduleTypes.UIBubble,canvasGameObject.transform);
 
-        if (!isPopup)
-            Bubble.name = gameObject.name;
-        else 
-            Bubble.name = gameObject.name + " POPUP";
+        Bubble.name = gameObject.name;
         
         infoLocation = Bubble.transform.Find("BubbleUI/Content/Info");
         
@@ -72,7 +67,10 @@ public class UIController : MonoBehaviour
         contentLayoutGroup = Bubble.transform.Find("BubbleUI/Content").GetComponent<VerticalLayoutGroup>();
         
         progressSlider = Bubble.transform.Find("BubbleUI/Progress/Slider").GetComponent<Slider>();
+        
+        bubbleBackground = Bubble.transform.Find("BubbleUI/Background").GetComponent<RectTransform>();
         instantiated = true;
+        print("instantiated");
     }
     
     
@@ -92,12 +90,12 @@ public class UIController : MonoBehaviour
         GameObject module;
         
         if(isInfo)
-            module = Instantiate(InfoModule, infoLocation);
+            module = Instantiate(moduleTypes.InfoModule, infoLocation);
         else
         {
-            print(InfoModule);
-            print(buyLocation.transform);
-            module = Instantiate(InfoModule, buyLocation.transform);
+            //print(InfoModule);
+            //print(buyLocation.transform);
+            module = Instantiate(moduleTypes.InfoModule, buyLocation.transform);
             module.transform.localPosition = new Vector3(0,0,0);
         }
         
@@ -151,14 +149,21 @@ public class UIController : MonoBehaviour
             return;
         
         pos = mainCamera.WorldToScreenPoint(transform.position + new Vector3(0, UIOffset, 0));
-        if (Bubble.transform.position != pos)
+        if (Bubble.transform.position != pos && Bubble.transform.position != pos - new Vector3(0, 350, 0))
         {
+            if (isPopup)
+            {
+                pos -= new Vector3(0, 350, 0);
+                bubbleBackground.SetLocalPositionAndRotation(new Vector3(0, 25, 0),
+                    Quaternion.Euler(0,0,180));
+            }
             Bubble.transform.position = pos;
         }
 
-        if(isPopup)
+        if (isPopup)
             return;
         
+
         timer += Time.deltaTime;
         if (timer >= cooldownTime)
         {
