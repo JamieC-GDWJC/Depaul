@@ -15,7 +15,8 @@ public class NarrativeController : MonoBehaviour
     
 
     [SerializeField] private RectTransform buttonNest;
-    [SerializeField] private RectTransform narrativeNest; 
+    [SerializeField] private RectTransform narrativeNest;
+    [SerializeField] private RectTransform PopupButton;
     
     //narrative
     private TMP_Text textBox;
@@ -27,6 +28,10 @@ public class NarrativeController : MonoBehaviour
     private bool deleteCurrentLine = false;
 
     private List<TMP_Text> buttonList = new List<TMP_Text>();
+    
+    //popup
+    private PopupScenario popup;
+    private Button popupBuyButton;
 
     public string State = "Default";
     
@@ -52,13 +57,24 @@ public class NarrativeController : MonoBehaviour
         buttonList.Add(button2);
         TMP_Text button3 = buttonNest.Find($"Option 3").GetChild(0).GetComponent<TMP_Text>();
         buttonList.Add(button3);
-        
+
+        popupBuyButton = PopupButton.Find("Buy").GetComponent<Button>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void LoadPopup(PopupScenario popupScenario)
+    {
+        ChangeState("Popup");
+        titleBox.text = popupScenario.title;
+        textList = popupScenario.story;
+        LoadLine(0);
+        popupBuyButton.GetComponentInChildren<TMP_Text>().text = popupScenario.cost.ToString();
     }
 
     public void LoadStory(StoryScenario storyScenario)
@@ -152,11 +168,20 @@ public class NarrativeController : MonoBehaviour
         {
             case "Default":
                 buttonNest.gameObject.SetActive(false);
+                PopupButton.gameObject.SetActive(false);
                 narrativeNest.offsetMin = new Vector2(0,0);
+                ;
                 break;
             case "Story":
                 buttonNest.gameObject.SetActive(true);
+                PopupButton.gameObject.SetActive(false);
                 narrativeNest.offsetMin = new Vector2(0,300);
+                break;
+            
+            case "Popup":
+                buttonNest.gameObject.SetActive(false);
+                PopupButton.gameObject.SetActive(true);
+                narrativeNest.offsetMin = new Vector2(0,110);
                 break;
             
             default:
@@ -197,6 +222,14 @@ public class NarrativeController : MonoBehaviour
             textList.Insert(0,story.o2Reason);
             LoadLine(0);
             deleteCurrentLine = true;
+        }
+    }
+
+    public void CheckPopupBuyButton(Button button)
+    {
+        if (button.transform.GetComponentInChildren<TMP_Text>().text == popup.cost.ToString())
+        {
+            
         }
     }
 }

@@ -38,7 +38,9 @@ public class Popups : MonoBehaviour
         active = state;
         if (active)
         {
-            StartCoroutine("Popup");
+            //StartCoroutine("Popup");
+            ActivatePopup(scenarios[index]);
+            print("popup activated");
         }
     }
 
@@ -72,6 +74,11 @@ public class Popups : MonoBehaviour
 
         yield return new WaitUntil(() => scenario.complete);
         currentActivePopup.DestroyUI();
+    }
+
+    void ActivatePopup(PopupScenario scenario)
+    {
+        _narrativeController.ChangeState("Popup");
     }
 
     void BuyPopup()
