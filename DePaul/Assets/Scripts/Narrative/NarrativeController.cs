@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class NarrativeController : MonoBehaviour
     [SerializeField] private RectTransform buttonNest;
     [SerializeField] private RectTransform narrativeNest;
     [SerializeField] private RectTransform PopupButton;
+
+    private GameManager GM;
     
     //narrative
     private TMP_Text textBox;
@@ -32,16 +35,19 @@ public class NarrativeController : MonoBehaviour
     //popup
     private PopupScenario popup;
     private Button popupBuyButton;
+    private GameObject popupInfoUI;
+    private Slider popupSlider;
 
     public string State = "Default";
     
     // Start is called before the first frame update
     void Awake()
     {
-        
         setUpVars();
         ChangeState(State);
         LoadLine(0);
+
+        GM = GetComponent<GameManager>();
     }
 
     private void setUpVars()
@@ -59,22 +65,36 @@ public class NarrativeController : MonoBehaviour
         buttonList.Add(button3);
 
         popupBuyButton = PopupButton.Find("Buy").GetComponent<Button>();
+        popupInfoUI = PopupButton.Find("Info").gameObject;
+        popupSlider = PopupButton.Find("Info/Slider").GetComponent<Slider>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (State == "Popup")
+        {
+            if (popup.cost <= GM.donationValue && !popup.isBought)
+                popupBuyButton.interactable = true;
+            else
+                popupBuyButton.interactable = false;
+        }
     }
 
     public void LoadPopup(PopupScenario popupScenario)
     {
         ChangeState("Popup");
-        titleBox.text = popupScenario.title;
-        textList = popupScenario.story;
+        popup = popupScenario;
+        titleBox.text = popup.title;
+        textList = popup.story;
+        popup.affectedAsset.uiController.ShowPopup(true);
         LoadLine(0);
-        popupBuyButton.GetComponentInChildren<TMP_Text>().text = popupScenario.cost.ToString();
+        popupInfoUI.transform.Find("Time/Text").GetComponent<TMP_Text>().text = popup.time.ToString();
+        popupInfoUI.transform.Find("People/Text").GetComponent<TMP_Text>().text = popup.peopleHelped.ToString();
+        popupInfoUI.transform.Find("Donation/Text").GetComponent<TMP_Text>().text = popup.donationesEarned.ToString();
+        
+        popupBuyButton.GetComponentInChildren<TMP_Text>().text = "€"+ popupScenario.cost.ToString();
     }
 
     public void LoadStory(StoryScenario storyScenario)
@@ -106,9 +126,7 @@ public class NarrativeController : MonoBehaviour
     {
         if(textList.Count-1 < stage)
             return;
-        
-        if (titleBox.text != Title)
-            titleBox.text = Title;
+            
         
         this.index = stage;
         textList[this.index] = textList[this.index].Replace("\\n", "\n");
@@ -181,7 +199,7 @@ public class NarrativeController : MonoBehaviour
             case "Popup":
                 buttonNest.gameObject.SetActive(false);
                 PopupButton.gameObject.SetActive(true);
-                narrativeNest.offsetMin = new Vector2(0,110);
+                narrativeNest.offsetMin = new Vector2(0,250);
                 break;
             
             default:
@@ -190,7 +208,7 @@ public class NarrativeController : MonoBehaviour
         State = newState;
     }
 
-    private void ResetToDefault()
+    public void ResetToDefault()
     {
         ChangeState("Default");
         textList.Clear();
@@ -225,11 +243,36 @@ public class NarrativeController : MonoBehaviour
         }
     }
 
-    public void CheckPopupBuyButton(Button button)
+    public void PopupBuyButton(Button button)
     {
-        if (button.transform.GetComponentInChildren<TMP_Text>().text == popup.cost.ToString())
+        if (popup.cost <= GM.donationValue)
         {
-            
+            popupBuyButton.interactable = false;
+            StartCoroutine(PopupBought());
         }
+    }
+
+    private IEnumerator PopupBought()
+    {
+        GM.SpendDono(popup.cost);
+        popup.isBought = true;
+        StartCoroutine(popup.affectedAsset.uiController.FillSliderOverTime(popup.time, true));
+        StartCoroutine(FillSliderOverTime(popup.time));
+        yield return new WaitForSeconds(popup.time);
+        popup.affectedAsset.uiController.ShowPopup(false);
+        popup.complete = true;
+    }
+    
+    public IEnumerator FillSliderOverTime(float time)
+    {
+        
+        float elapsedTime = 0f;
+        while (elapsedTime < time)
+        {
+            elapsedTime += Time.deltaTime;
+            popupSlider.value = Mathf.Clamp01(elapsedTime / time);
+            yield return null;
+        }
+        popupSlider.value = 1f; // Ensure the slider is set to 1 at the end
     }
 }

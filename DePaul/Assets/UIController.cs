@@ -28,13 +28,18 @@ public class UIController : MonoBehaviour
     private RectTransform bubbleBackground;
     
     private InfoModuleTypes moduleTypes;
-    VerticalLayoutGroup contentLayoutGroup;
+    private VerticalLayoutGroup contentLayoutGroup;
+
+    private GameObject PopupUI;
+    private Slider PopupSlider;
+    private Animator PopupAnimator;
 
     private BuyAsset _buyAsset;
     private Camera mainCamera;
 
     private bool isShowing;
-    public bool isPopup;
+    
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -50,26 +55,37 @@ public class UIController : MonoBehaviour
 
     void InstantiateUI()
     {
-        
+        //bubble icon for buying and upgrading
         Bubble = Instantiate(moduleTypes.UIBubble,canvasGameObject.transform);
 
         Bubble.name = gameObject.name;
         
         infoLocation = Bubble.transform.Find("BubbleUI/Content/Info");
         
-        buyLocation = Bubble.transform.Find("BubbleUI/Content/Buy").GetComponent<Button>();
+        buyLocation = Bubble.transform.GetComponentInChildren<Button>();
         Function = _buyAsset.Buy;
         ResetButton();
         
         nameLocation = Bubble.transform.Find("BubbleUI/Content/Name");
         nameLocation.GetComponent<TMP_Text>().text = gameObject.name;
         
-        contentLayoutGroup = Bubble.transform.Find("BubbleUI/Content").GetComponent<VerticalLayoutGroup>();
+        contentLayoutGroup = Bubble.transform.GetComponentInChildren<VerticalLayoutGroup>();
         
-        progressSlider = Bubble.transform.Find("BubbleUI/Progress/Slider").GetComponent<Slider>();
+        progressSlider = Bubble.transform.GetComponentInChildren<Slider>();
         
-        bubbleBackground = Bubble.transform.Find("BubbleUI/Background").GetComponent<RectTransform>();
+        bubbleBackground = Bubble.transform.GetComponentInChildren<RectTransform>();
+        
+        //popup ui for progression view of popup
+        PopupUI = Instantiate(moduleTypes.PopupIcon,canvasGameObject.transform);
+        PopupUI.name = gameObject.name + " Popup";
+
+        PopupSlider = PopupUI.transform.GetComponentInChildren<Slider>();
+        PopupAnimator = PopupUI.GetComponent<Animator>();
+        PopupUI.SetActive(false);
+        
         instantiated = true;
+        
+        
         print("instantiated");
     }
     
@@ -151,18 +167,12 @@ public class UIController : MonoBehaviour
         pos = mainCamera.WorldToScreenPoint(transform.position + new Vector3(0, UIOffset, 0));
         if (Bubble.transform.position != pos && Bubble.transform.position != pos - new Vector3(0, 350, 0))
         {
-            if (isPopup)
-            {
-                pos -= new Vector3(0, 350, 0);
-                bubbleBackground.SetLocalPositionAndRotation(new Vector3(0, 25, 0),
-                    Quaternion.Euler(0,0,180));
-            }
             Bubble.transform.position = pos;
+            if (PopupUI.activeSelf)
+            {
+                PopupUI.transform.position = pos - new Vector3(0, UIOffset, 0);
+            }
         }
-
-        if (isPopup)
-            return;
-        
 
         timer += Time.deltaTime;
         if (timer >= cooldownTime)
@@ -173,6 +183,7 @@ public class UIController : MonoBehaviour
             else
                 timer = 0;
         }
+        
     }
 
     public void ShowUI(bool show)
@@ -235,16 +246,23 @@ public class UIController : MonoBehaviour
         timer = 0;
     }
 
-    public IEnumerator FillSliderOverTime(float time)
+    public IEnumerator FillSliderOverTime(float time, bool isPopup = false)
     {
+        Slider slider;
+        if (!isPopup)
+            slider = progressSlider;
+        else
+            slider = PopupSlider;
+        
+        
         float elapsedTime = 0f;
         while (elapsedTime < time)
         {
             elapsedTime += Time.deltaTime;
-            progressSlider.value = Mathf.Clamp01(elapsedTime / time);
+            slider.value = Mathf.Clamp01(elapsedTime / time);
             yield return null;
         }
-        progressSlider.value = 1f; // Ensure the slider is set to 1 at the end
+        slider.value = 1f; // Ensure the slider is set to 1 at the end
     }
     
     public static bool IsPointerOverUIElement()
@@ -261,7 +279,43 @@ public class UIController : MonoBehaviour
         Destroy(Bubble);
         Destroy(this);
     }
+
+    public void ShowPopup(bool show)
+    {
+        if (show)
+        {
+            PopupUI.SetActive(true);
+            PopupSlider.value = 0;
+        }
+        else
+        {
+            StartCoroutine(endPopupAnim());
+        }
+    }
     
+    private IEnumerator endPopupAnim()
+    {
+        PopupAnimator.SetBool("isComplete", true);
+        bool isAnimationPlaying = true;
+        while (isAnimationPlaying)
+        {
+            // Get the current state info of the animation
+            AnimatorStateInfo stateInfo = PopupAnimator.GetCurrentAnimatorStateInfo(0);
+            // Wait until the current state is the desired animation and it's done playing
+            if (stateInfo.IsName("PopupComplete") && stateInfo.normalizedTime >= 1.0f && !PopupAnimator.IsInTransition(0))
+            {
+                // Animation has ended
+                isAnimationPlaying = false;
+                print("done");
+                PopupAnimator.SetBool("isComplete", false);
+                PopupUI.SetActive(false);
+            }
+            yield return null;
+        }
+
+    }
+
+
 }
 
 

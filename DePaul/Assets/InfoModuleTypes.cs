@@ -6,7 +6,8 @@ public class InfoModuleTypes : MonoBehaviour
 
     public GameObject UIBubble;
     public GameObject InfoModule;
-    
+    public GameObject PopupIcon;
+
 }
 
 [System.Serializable]

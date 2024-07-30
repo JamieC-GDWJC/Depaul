@@ -54,4 +54,5 @@ public class PopupScenario
     public int donationesEarned;
 
     public bool complete = false;
+    public bool isBought = false;
 }

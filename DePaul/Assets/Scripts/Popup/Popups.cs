@@ -10,7 +10,7 @@ public class Popups : MonoBehaviour
     public List<PopupScenario> scenarios = new List<PopupScenario>();
     private GameObject focusPanel;
 
-    private int index = 0;
+    public int index = 0;
 
     [SerializeField] private Preset uiControllerPreset;
 
@@ -38,53 +38,29 @@ public class Popups : MonoBehaviour
         active = state;
         if (active)
         {
-            //StartCoroutine("Popup");
             ActivatePopup(scenarios[index]);
             print("popup activated");
         }
     }
 
-    IEnumerator Popup()
+    IEnumerator WhilePopupActive(PopupScenario scenario)
     {
-        print("attemping popup");
-        yield return new WaitUntil(() => scenarios[index].affectedAsset.active);
-
-        setPanel(true);
-        //_narrativeController.LoadStory(scenarios[index]);
-        PopupScenario scenario = scenarios[index];
-        
-        currentActivePopup = scenario.affectedAsset.AddComponent<UIController>();
-        currentActivePopup.isPopup = true;
-        
-        yield return new WaitUntil(() => currentActivePopup.instantiated);
-        print("passed instantiation");
-        currentActivePopup.AddInfoField("Buy", scenario.cost.ToString(),false);
-        currentActivePopup.AddInfoField("Cooldown", scenario.time.ToString());
-        
-        if(scenario.peopleHelped != 0)
-            currentActivePopup.AddInfoField("People Helped", scenario.peopleHelped.ToString());
-        
-        if(scenario.donationesEarned != 0)
-            currentActivePopup.AddInfoField("Income", scenario.donationesEarned.ToString());
-        
-        currentActivePopup.ShowUI(true);
-        currentActivePopup.Function = BuyPopup;
-        
+        yield return new WaitUntil(() => scenario.complete == true);
+        DeacrivatePopup();
         index++;
-
-        yield return new WaitUntil(() => scenario.complete);
-        currentActivePopup.DestroyUI();
     }
 
     void ActivatePopup(PopupScenario scenario)
     {
-        _narrativeController.ChangeState("Popup");
+        _narrativeController.LoadPopup(scenario);
+        StartCoroutine(WhilePopupActive(scenario));
     }
 
-    void BuyPopup()
+    void DeacrivatePopup()
     {
-        
+        _narrativeController.ResetToDefault();
     }
+    
     
     void setPanel(bool activate)
     {
