@@ -13,7 +13,7 @@ public class IncomeGenerator : MonoBehaviour
     [Header("Audio")] 
     public List<AudioClipWithKey> clipList = new List<AudioClipWithKey>();
 
-    [Header("Upgrades")] 
+    [Header("Upgrades \nadd duplicate of the last one if you want to assign manager")] 
     public IncomeUpgrades upgrades = new IncomeUpgrades();
     
     private Coroutine automaticCoroutine;
@@ -168,14 +168,22 @@ public class IncomeGenerator : MonoBehaviour
             return;
         }
         
+        
         playAudio("Upgrade");
-        GM.SpendDono(upgrades.upgradesInOrder[0].cost);        
+        GM.SpendDono(upgrades.upgradesInOrder[0].cost);
+        
+        
         waitTime = upgrades.upgradesInOrder[0].waitTime;
         collectionAmount = upgrades.upgradesInOrder[0].collectionAmount;
         UI.ChangeField("Cooldown", waitTime + "s");
         UI.ChangeField("Income",  "€" + collectionAmount);
 
         upgrades.upgradesInOrder.RemoveAt(0);
+        
+        if (upgrades.upgradesInOrder.Count == 0)
+        {
+            ToggleAutomaticMode(true);
+        }
         
         SetUpgradeButtonText();
         
@@ -185,8 +193,11 @@ public class IncomeGenerator : MonoBehaviour
     {
         if(upgrades.upgradesInOrder.Count == 0)
             UI.ChangeField("Buy", "Fully Upgraded");
+        else  if(upgrades.upgradesInOrder.Count == 1 && !isAutomatic)
+            UI.ChangeField("Buy", "Assign Manager\n€" + upgrades.upgradesInOrder[0].cost);
         else
             UI.ChangeField("Buy", "€" + upgrades.upgradesInOrder[0].cost);
+
     }
 
     void SetBuyButton()

@@ -14,7 +14,7 @@ public class ServiceGenerator : MonoBehaviour
     [Header("Audio")] 
     public List<AudioClipWithKey> clipList = new List<AudioClipWithKey>();
     
-    [Header("Upgrades")] 
+    [Header("Upgrades \nadd duplicate of the last one if you want to assign manager")] 
     public ServiceUpgrades upgrades;
     
     private Coroutine automaticCoroutine;
@@ -184,10 +184,15 @@ public class ServiceGenerator : MonoBehaviour
         PeopleHelped = upgrades.upgradesInOrder[0].peopleHelped;
         CostToRun = upgrades.upgradesInOrder[0].costToRun;
         UI.ChangeField("Cooldown", waitTime + "s");
-        UI.ChangeField("Income",  "€" + PeopleHelped);
+        UI.ChangeField("People Helped", PeopleHelped.ToString());
         UI.ChangeField("Cost", "€" + CostToRun);
 
         upgrades.upgradesInOrder.RemoveAt(0);
+        
+        if (upgrades.upgradesInOrder.Count == 0)
+        {
+            ToggleAutomaticMode(true);
+        }
         
         SetUpgradeButtonText();
         
@@ -197,8 +202,11 @@ public class ServiceGenerator : MonoBehaviour
     {
         if(upgrades.upgradesInOrder.Count == 0)
             UI.ChangeField("Buy", "Fully Upgraded");
+        else  if(upgrades.upgradesInOrder.Count == 1 && !isAutomatic)
+            UI.ChangeField("Buy", "Assign Manager\n€" + upgrades.upgradesInOrder[0].cost);
         else
             UI.ChangeField("Buy", "€" + upgrades.upgradesInOrder[0].cost);
+
     }
 
     void SetBuyButton()
