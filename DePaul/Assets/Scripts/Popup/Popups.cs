@@ -12,8 +12,6 @@ public class Popups : MonoBehaviour
 
     public int index = 0;
 
-    [SerializeField] private Preset uiControllerPreset;
-
     [SerializeField] private int invokeTimer;
 
     private UIController currentActivePopup;
@@ -38,7 +36,7 @@ public class Popups : MonoBehaviour
         active = state;
         if (active)
         {
-            ActivatePopup(scenarios[index]);
+            InvokeRepeating("ActivatePopup",invokeTimer,invokeTimer);
             print("popup activated");
         }
     }
@@ -50,8 +48,12 @@ public class Popups : MonoBehaviour
         index++;
     }
 
-    void ActivatePopup(PopupScenario scenario)
+    void ActivatePopup()
     {
+        if(_narrativeController.State != "Default")
+            return;
+        
+        PopupScenario scenario = scenarios[index];
         _narrativeController.LoadPopup(scenario);
         StartCoroutine(WhilePopupActive(scenario));
     }

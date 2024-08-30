@@ -4,8 +4,6 @@ using UnityEngine;
 [System.Serializable]
 public class Point
 {
-    public Vector3 CameraPositionAtStage;
-    public Vector3 CameraRotationAtStage;
     public List<ExternalCommunication> AssetsToComplete;
 }
  

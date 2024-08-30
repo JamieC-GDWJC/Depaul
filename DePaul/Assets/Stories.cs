@@ -22,10 +22,7 @@ public class Stories : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_narrativeController.isAllTextRead() && focusPanel.activeSelf)
-        {
-            setPanel(false);
-        }
+
     }
 
     public void ActivatePopupStories(bool state)
@@ -39,17 +36,15 @@ public class Stories : MonoBehaviour
 
     void Story()
     {
+        if(_narrativeController.State != "Default")
+            return;
+        
         if (scenarios[index].o1.active && scenarios[index].o2.active && scenarios[index].correctOption.active && active)
         {
-            setPanel(true);
+            _narrativeController.setPanel(true);
             _narrativeController.LoadStory(scenarios[index]);
             index++;
         }
-    }
-    
-    void setPanel(bool activate)
-    {
-        focusPanel.SetActive(activate);
     }
     
 }

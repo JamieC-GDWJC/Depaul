@@ -57,7 +57,7 @@ public class ProgressionManager : MonoBehaviour
             done = true;
             return;
         }
-        _cameraM.SwitchStage(listOfStages.Stage[stage].CameraPositionAtStage, listOfStages.Stage[stage].CameraRotationAtStage);
+        //_cameraM.SwitchStage(listOfStages.Stage[stage].CameraPositionAtStage, listOfStages.Stage[stage].CameraRotationAtStage);
         externalCommunications = listOfStages.Stage[stage].AssetsToComplete;
     }
 }

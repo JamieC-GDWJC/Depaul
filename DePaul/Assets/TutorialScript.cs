@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,24 +30,15 @@ public class TutorialScript : MonoBehaviour
         {
             CancelInvoke();
         }
-        //print("stage: " + stage);
         _index = stage;
         
         assetsToActivate.Clear(); 
         assetsToActivate = narationStages[_index].activeObjects;
-
-        _narrativeController.textList.Clear();
-        _narrativeController.textList = narationStages[_index].Lines;
-
-        _narrativeController.Title = narationStages[_index].Title;
-        setPanel(true);
-        _narrativeController.LoadLine(0);
+        
+        _narrativeController.LoadNarrative(narationStages[_index].Title,narationStages[_index].Lines);
+        _narrativeController.setPanel(true);
     }
-
-    void setPanel(bool activate)
-    {
-        focusPanel.SetActive(activate);
-    }
+    
 
     bool CheckIfStageIsComplete()
     {
@@ -71,11 +63,12 @@ public class TutorialScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (_narrativeController.isAllTextRead() && focusPanel.activeSelf)
+        if (assetsToActivate.Count == 0 && _narrativeController.isAllTextRead())
         {
-            setPanel(false);
+            GetComponent<ProgressionManager>().enabled = true;
+            this.enabled = false;
         }
     }
 }

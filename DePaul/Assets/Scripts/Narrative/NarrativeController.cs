@@ -18,7 +18,8 @@ public class NarrativeController : MonoBehaviour
     [SerializeField] private RectTransform buttonNest;
     [SerializeField] private RectTransform narrativeNest;
     [SerializeField] private RectTransform PopupButton;
-
+    
+    private GameObject focusPanel;
     private GameManager GM;
     
     //narrative
@@ -47,6 +48,7 @@ public class NarrativeController : MonoBehaviour
         ChangeState(State);
         LoadLine(0);
 
+        focusPanel = GameObject.Find("Focus Panel");
         GM = GetComponent<GameManager>();
     }
 
@@ -80,6 +82,8 @@ public class NarrativeController : MonoBehaviour
             else
                 popupBuyButton.interactable = false;
         }
+        if(isAllTextRead() && focusPanel.activeSelf)
+            setPanel(false);
     }
 
     public void LoadPopup(PopupScenario popupScenario)
@@ -109,17 +113,25 @@ public class NarrativeController : MonoBehaviour
         int one = Random.Range(0, 3);
         int two = one;
         int three = one;
-        while (two == one)
+        while (two != one)
         {
             two = Random.Range(0, 3);
         }
-        while (three == one || three == two)
+        while (three != one || three != two)
         {
             three = Random.Range(0, 3);
         }
         buttonList[one].text = storyScenario.o1.name;
         buttonList[two].text = storyScenario.o1.name;
         buttonList[three].text = storyScenario.o1.name;
+    }
+
+    public void LoadNarrative(string _title, List<string> _textList)
+    {
+        ChangeState("Narrative");
+        titleBox.text = _title;
+        textList = _textList;
+        LoadLine(0);
     }
     
     public void LoadLine(int stage)
@@ -133,6 +145,11 @@ public class NarrativeController : MonoBehaviour
         textBox.text = textList[this.index];
         
         CheckButtons();
+
+        if (isAllTextRead() && State == "Narrative")
+        {
+            Invoke(nameof(ResetToDefault),5);
+        }
     }
 
     public void NextLine()
@@ -188,8 +205,8 @@ public class NarrativeController : MonoBehaviour
                 buttonNest.gameObject.SetActive(false);
                 PopupButton.gameObject.SetActive(false);
                 narrativeNest.offsetMin = new Vector2(0,0);
-                ;
                 break;
+            
             case "Story":
                 buttonNest.gameObject.SetActive(true);
                 PopupButton.gameObject.SetActive(false);
@@ -202,6 +219,12 @@ public class NarrativeController : MonoBehaviour
                 narrativeNest.offsetMin = new Vector2(0,250);
                 break;
             
+            case "Narrative":
+                buttonNest.gameObject.SetActive(false);
+                PopupButton.gameObject.SetActive(false);
+                narrativeNest.offsetMin = new Vector2(0,0);
+                break;
+            
             default:
                 return;
         }
@@ -212,6 +235,7 @@ public class NarrativeController : MonoBehaviour
     {
         ChangeState("Default");
         textList.Clear();
+        index = 0;
         Title = "";
         textBox.text = "";
         titleBox.text = "";
@@ -274,5 +298,10 @@ public class NarrativeController : MonoBehaviour
             yield return null;
         }
         popupSlider.value = 1f; // Ensure the slider is set to 1 at the end
+    }
+    
+    public void setPanel(bool activate)
+    {
+        focusPanel.SetActive(activate);
     }
 }
